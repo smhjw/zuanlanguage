@@ -1,47 +1,55 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>祖安语录 - 火力全开</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <title>祖安语录</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="bg" aria-hidden="true"></div>
-  <main class="frame">
-    <header class="hero">
-      <div class="brand">CAONIMA.DE</div>
-      <h1>祖安语录</h1>
-      <p class="sub">
-        吐槽生成器 · 点击按钮随机输出 · 保持分寸，别真伤人
-      </p>
-    </header>
+  <div class="grid-bg" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
 
-    <section class="panel" aria-live="polite">
-      <div class="panel-top">
-        <div class="mode" id="modeBadge">模式：火力全开</div>
-        <div class="signal">
-          <span class="dot"></span>
-          READY
+  <main class="wrap">
+    <section class="card">
+      <div class="brand">CAONIMA.DE</div>
+      <div class="title-badge">
+        <span class="bolt">⚡</span>
+        祖安语录
+        <span class="bolt">⚡</span>
+      </div>
+      <div class="sub">吐槽生成器 · 点击按钮随机输出 · 保持分寸，别真伤人</div>
+
+      <div class="meta-row">
+        <div class="mode-line" id="modeBadge">模式：火力全开</div>
+        <div class="ready"><span class="dot"></span>READY</div>
+      </div>
+
+      <div class="output" id="output">点击下方按钮开始</div>
+
+      <div class="controls">
+        <div class="controls-row primary">
+          <button class="btn blast" id="btnBlast"><span class="icon">🤬</span>火力全开</button>
+          <button class="btn lotus" id="btnLotus"><span class="icon">😇</span>口吐莲花</button>
+        </div>
+
+        <div class="controls-row secondary">
+          <button class="btn mini" id="btnBack">◀ 后退</button>
+          <button class="btn mini" id="btnDad">□ 骂爹模式</button>
+          <button class="btn mini copy" id="btnCopy">复制 COPY</button>
         </div>
       </div>
-      <div class="output" id="output">点击下方按钮开始</div>
-    </section>
 
-    <section class="controls">
-      <button class="btn primary" id="btnBlast">火力全开</button>
-      <button class="btn ghost" id="btnLotus">口吐莲花</button>
-      <button class="btn" id="btnBack">后退</button>
-      <button class="btn warn" id="btnDad">骂爹模式</button>
-      <button class="btn copy" id="btnCopy">复制 COPY</button>
-    </section>
+      <div class="banner warning">⚠ 请不要主动攻击别人，情绪上头先停一停 ⚠</div>
+      <div class="banner ad">📢 本站流量巨大，广告位 66 元/天 联系邮箱：<span class="link">zxdp666@gmail.com</span></div>
 
-    <section class="notes">
-      <div>提示：双击输出区域可再生成一条。</div>
-      <div>免责声明：内容仅供娱乐，请勿用于人身攻击。</div>
+      <div class="notice-box">
+        <div>未经许可请勿抄袭本站代码</div>
+        <div>如需合作请联系上方邮箱</div>
+        <div>内容仅供娱乐，请自我约束</div>
+      </div>
+
+      <div class="banner danger">⚠ 如果你还在对骂，请先冷静一下 ⚠</div>
     </section>
   </main>
 
