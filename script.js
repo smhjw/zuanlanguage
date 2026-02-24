@@ -2,18 +2,55 @@ const outputEl = document.getElementById("output");
 const modeBadge = document.getElementById("modeBadge");
 const btnBlast = document.getElementById("btnBlast");
 const btnLotus = document.getElementById("btnLotus");
+const btnNext = document.getElementById("btnNext");
 const btnBack = document.getElementById("btnBack");
 const btnDad = document.getElementById("btnDad");
 const btnCopy = document.getElementById("btnCopy");
 const dadCheck = btnDad ? btnDad.querySelector(".check") : null;
+const toastEl = document.getElementById("toast");
+const filterNoDadBtn = document.getElementById("filterNoDad");
+const filterNoInsultBtn = document.getElementById("filterNoInsult");
+const filterKeepDirtyBtn = document.getElementById("filterKeepDirty");
+const keywordInput = document.getElementById("keywordInput");
 
+const ASSET_VERSION = "20260224";
 const QUOTES_FILES = ["祖安语录.txt", "祖安语录2.txt"];
+const INSULT_WORDS = [
+  "傻逼",
+  "垃圾",
+  "废物",
+  "脑残",
+  "弱智",
+  "蠢货",
+  "白痴",
+  "畜生",
+  "滚",
+  "废材"
+];
+const DIRTY_WORDS = [
+  "操",
+  "草",
+  "艹",
+  "妈",
+  "逼",
+  "屎",
+  "尿",
+  "鸡巴",
+  "他妈",
+  "狗"
+];
 
 let history = [];
 let historyIndex = -1;
 let dadMode = false;
 let currentMode = "blast";
 let loadedLines = [];
+let filterNoDad = true;
+let filterNoInsult = false;
+let keepDirty = true;
+let retryCount = 0;
+const MAX_RETRY = 3;
+const RETRY_DELAY = 1200;
 
 function normalizeLines(text) {
   return text
@@ -27,7 +64,7 @@ async function loadQuotes() {
   try {
     const results = await Promise.all(
       QUOTES_FILES.map((file) =>
-        fetch(file, { cache: "no-store" })
+        fetch(`${file}?v=${ASSET_VERSION}`, { cache: "no-store" })
           .then((response) => (response.ok ? response.text() : ""))
           .catch(() => "")
       )
@@ -35,21 +72,68 @@ async function loadQuotes() {
     const lines = results.flatMap((text) => normalizeLines(text));
     if (lines.length > 0) {
       loadedLines = Array.from(new Set(lines));
+      retryCount = 0;
       if (history.length === 0) {
         generateLine();
       }
+      return;
+    }
+    if (retryCount < MAX_RETRY) {
+      retryCount += 1;
+      setOutput("词库加载失败，正在重试...");
+      setTimeout(loadQuotes, RETRY_DELAY);
+    } else {
+      setOutput("词库加载失败，请刷新页面重试。");
     }
   } catch (err) {
-    // Ignore load errors; output will show empty pool message.
+    if (retryCount < MAX_RETRY) {
+      retryCount += 1;
+      setOutput("词库加载失败，正在重试...");
+      setTimeout(loadQuotes, RETRY_DELAY);
+    } else {
+      setOutput("词库加载失败，请刷新页面重试。");
+    }
   }
 }
 
+function containsAny(line, list) {
+  return list.some((word) => line.includes(word));
+}
+
+function parseKeywords() {
+  if (!keywordInput) return [];
+  const raw = keywordInput.value.trim();
+  if (!raw) return [];
+  return raw.split(/[\s,，、]+/).map((word) => word.trim()).filter(Boolean);
+}
+
 function getPool() {
+  let pool = loadedLines;
   if (dadMode) {
-    return loadedLines.filter((line) => line.includes("爹"));
+    pool = pool.filter((line) => line.includes("爹"));
+  } else if (filterNoDad) {
+    pool = pool.filter((line) => !line.includes("爹"));
   }
 
-  return loadedLines;
+  if (!keepDirty) {
+    pool = pool.filter((line) => !containsAny(line, DIRTY_WORDS));
+  }
+
+  if (filterNoInsult) {
+    pool = pool.filter((line) => !containsAny(line, INSULT_WORDS));
+  }
+
+  const keywords = parseKeywords();
+  if (keywords.length > 0) {
+    const keywordPool = pool.filter((line) =>
+      keywords.some((word) => line.includes(word))
+    );
+    if (keywordPool.length > 0) {
+      pool = keywordPool;
+    }
+  }
+
+  return pool;
 }
 
 function updateModeUI() {
@@ -66,20 +150,47 @@ function updateModeUI() {
   }
 }
 
+function updateFiltersUI() {
+  if (filterNoDadBtn) {
+    const check = filterNoDadBtn.querySelector(".check");
+    if (check) check.textContent = filterNoDad ? "☑" : "□";
+    filterNoDadBtn.setAttribute("aria-pressed", filterNoDad ? "true" : "false");
+  }
+  if (filterNoInsultBtn) {
+    const check = filterNoInsultBtn.querySelector(".check");
+    if (check) check.textContent = filterNoInsult ? "☑" : "□";
+    filterNoInsultBtn.setAttribute("aria-pressed", filterNoInsult ? "true" : "false");
+  }
+  if (filterKeepDirtyBtn) {
+    const check = filterKeepDirtyBtn.querySelector(".check");
+    if (check) check.textContent = keepDirty ? "☑" : "□";
+    filterKeepDirtyBtn.setAttribute("aria-pressed", keepDirty ? "true" : "false");
+  }
+}
+
+let toastTimer;
+function showToast(message) {
+  if (!toastEl) return;
+  toastEl.textContent = message;
+  toastEl.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    toastEl.classList.remove("show");
+  }, 1400);
+}
+
 function setOutput(text) {
   outputEl.textContent = text;
 }
 
 function generateLine() {
+  if (loadedLines.length === 0) {
+    setOutput("词库为空或未加载，请稍后再试。");
+    return;
+  }
   const pool = getPool();
   if (pool.length === 0) {
-    if (location.protocol === "file:") {
-      setOutput(
-        "检测到本地 file:// 打开，浏览器会阻止读取 txt。请用本地服务器或 GitHub Pages 访问。"
-      );
-      return;
-    }
-    setOutput("词库为空或未加载，请检查祖安语录.txt / 祖安语录2.txt 是否可访问。");
+    setOutput("筛选条件过严，暂无结果。");
     return;
   }
 
@@ -107,13 +218,15 @@ function goBack() {
   setOutput(history[historyIndex]);
 }
 
-async function copyCurrent() {
+async function copyCurrent(showButtonFeedback = true) {
   const text = outputEl.textContent.trim();
   if (!text) return;
 
   try {
     await navigator.clipboard.writeText(text);
-    btnCopy.textContent = "已复制";
+    if (btnCopy && showButtonFeedback) {
+      btnCopy.textContent = "已复制";
+    }
   } catch (err) {
     const textarea = document.createElement("textarea");
     textarea.value = text;
@@ -121,12 +234,18 @@ async function copyCurrent() {
     textarea.select();
     document.execCommand("copy");
     textarea.remove();
-    btnCopy.textContent = "已复制";
+    if (btnCopy && showButtonFeedback) {
+      btnCopy.textContent = "已复制";
+    }
   }
 
-  setTimeout(() => {
-    btnCopy.textContent = "复制 COPY";
-  }, 1200);
+  showToast("已复制");
+
+  if (btnCopy && showButtonFeedback) {
+    setTimeout(() => {
+      btnCopy.textContent = "复制 COPY";
+    }, 1200);
+  }
 }
 
 btnBlast.addEventListener("click", () => {
@@ -141,15 +260,53 @@ btnLotus.addEventListener("click", () => {
   generateLine();
 });
 
+if (btnNext) {
+  btnNext.addEventListener("click", generateLine);
+}
+
 btnDad.addEventListener("click", () => {
   dadMode = !dadMode;
   updateModeUI();
   generateLine();
 });
 
+if (filterNoDadBtn) {
+  filterNoDadBtn.addEventListener("click", () => {
+    filterNoDad = !filterNoDad;
+    updateFiltersUI();
+    generateLine();
+  });
+}
+
+if (filterNoInsultBtn) {
+  filterNoInsultBtn.addEventListener("click", () => {
+    filterNoInsult = !filterNoInsult;
+    updateFiltersUI();
+    generateLine();
+  });
+}
+
+if (filterKeepDirtyBtn) {
+  filterKeepDirtyBtn.addEventListener("click", () => {
+    keepDirty = !keepDirty;
+    updateFiltersUI();
+    generateLine();
+  });
+}
+
+if (keywordInput) {
+  keywordInput.addEventListener("input", () => {
+    if (loadedLines.length > 0) {
+      generateLine();
+    }
+  });
+}
+
 btnBack.addEventListener("click", goBack);
-btnCopy.addEventListener("click", copyCurrent);
+btnCopy.addEventListener("click", () => copyCurrent(true));
 outputEl.addEventListener("dblclick", generateLine);
+outputEl.addEventListener("click", () => copyCurrent(false));
 
 updateModeUI();
+updateFiltersUI();
 loadQuotes();
