@@ -149,7 +149,7 @@ body {
   font-size: 16px;
   font-weight: 600;
   line-height: 1.6;
-  font-family: var(--font-title);
+  font-family: var(--font-body);
   cursor: pointer;
   position: relative;
   border-radius: 4px;
