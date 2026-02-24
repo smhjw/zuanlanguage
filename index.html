@@ -7,50 +7,67 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="grid-bg" aria-hidden="true"></div>
-  <div class="grain" aria-hidden="true"></div>
+  <div class="bg-orb orb-a" aria-hidden="true"></div>
+  <div class="bg-orb orb-b" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
 
-  <main class="wrap">
-    <section class="card">
-      <div class="title-badge">
-        <span class="bolt">⚡</span>
-        祖安语录
-        <span class="bolt">⚡</span>
+  <main class="shell">
+    <header class="hero">
+      <div class="badge">ZUA.N / GEN</div>
+      <h1>祖安语录</h1>
+      <p class="tagline">火力输出器 · 随机语录生成 · 口嗨自控</p>
+      <div class="status-row">
+        <div class="mode" id="modeBadge">模式：火力全开</div>
+        <div class="signal"><span class="dot"></span>ONLINE</div>
       </div>
-      <div class="sub">吐槽生成器 · 点击按钮随机输出 · 保持分寸，别真伤人</div>
+    </header>
 
-      <div class="meta-row">
-        <div class="mode-line" id="modeBadge">模式：火力全开</div>
-        <div class="ready"><span class="dot"></span>READY</div>
-      </div>
-
-      <div class="output-shell">
-        <div class="output" id="output">点击下方按钮开始</div>
+    <section class="console">
+      <div class="output-wrap">
+        <div class="output-head">
+          <span class="label">OUTPUT</span>
+          <span class="hint">双击文本可刷新</span>
+        </div>
+        <div class="output-shell">
+          <div class="output" id="output">点击下方按钮开始</div>
+        </div>
       </div>
 
       <div class="controls">
-        <div class="controls-row primary">
-          <button class="btn blast" id="btnBlast"><span class="icon">🤬</span>火力全开</button>
-          <button class="btn lotus" id="btnLotus"><span class="icon">😇</span>口吐莲花</button>
+        <div class="group">
+          <div class="group-title">主开关</div>
+          <div class="controls-row primary">
+            <button class="btn blast" id="btnBlast"><span class="icon">🤬</span>火力全开</button>
+            <button class="btn lotus" id="btnLotus"><span class="icon">😇</span>口吐莲花</button>
+          </div>
         </div>
 
-        <div class="controls-row secondary">
-          <button class="btn mini" id="btnBack">◀ 后退</button>
-          <button class="btn mini" id="btnDad">□ 骂爹模式</button>
-          <button class="btn mini copy" id="btnCopy">复制 COPY</button>
+        <div class="group">
+          <div class="group-title">辅助</div>
+          <div class="controls-row secondary">
+            <button class="btn mini" id="btnBack">◀ 后退</button>
+            <button class="btn mini" id="btnDad">□ 骂爹模式</button>
+            <button class="btn mini copy" id="btnCopy">复制 COPY</button>
+          </div>
+        </div>
+
+        <div class="chips">
+          <span class="chip">内容仅供娱乐</span>
+          <span class="chip">注意边界</span>
+          <span class="chip">别真上头</span>
         </div>
       </div>
+    </section>
 
-      <div class="banner warning">⚠ 请不要主动攻击别人，情绪上头先停一停 ⚠</div>
-      <div class="banner ad hidden" hidden aria-hidden="true">📢 本站流量巨大，广告位 66 元/天 联系邮箱：<a class="link" href="mailto:zxdp666@gmail.com">zxdp666@gmail.com</a></div>
-
-      <div class="notice-box">
-        <div>未经许可请勿抄袭本站代码</div>
-        <div>如需合作请联系上方邮箱</div>
-        <div>内容仅供娱乐，请自我约束</div>
+    <section class="footer-note">
+      <div class="notice">
+        <div class="notice-title">提示</div>
+        <p>别拿输出当现实攻击，冷静才是硬实力。</p>
       </div>
-
-      <div class="banner danger">⚠ 如果你还在对骂，请先冷静一下 ⚠</div>
+      <div class="contact">
+        <div class="contact-title">联系邮箱</div>
+        <a href="mailto:zxdp666@gmail.com">zxdp666@gmail.com</a>
+      </div>
     </section>
   </main>
 
