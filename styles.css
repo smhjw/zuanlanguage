@@ -26,6 +26,10 @@ body {
     radial-gradient(circle at 50% 90%, rgba(198, 255, 75, 0.2), transparent 50%),
     #0f1211;
   min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
 }
 
 .bg-orb {
@@ -62,20 +66,24 @@ body {
 .shell {
   position: relative;
   z-index: 2;
-  max-width: 1020px;
+  width: min(720px, 92vw);
   margin: 0 auto;
-  padding: 48px 20px 64px;
+  padding: 28px;
   display: grid;
-  gap: 28px;
+  gap: 18px;
+  background: var(--panel);
+  border: 3px solid var(--outline);
+  box-shadow: var(--shadow);
 }
 
 .hero {
-  background: var(--panel);
-  border: 3px solid var(--outline);
-  padding: 24px 26px;
-  box-shadow: var(--shadow);
+  background: transparent;
+  border: none;
+  padding: 0 0 16px;
+  box-shadow: none;
   display: grid;
   gap: 10px;
+  border-bottom: 2px dashed rgba(17, 17, 17, 0.4);
 }
 
 .badge {
@@ -138,17 +146,17 @@ body {
 
 .console {
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
-  gap: 22px;
+  grid-template-columns: 1fr;
+  gap: 14px;
 }
 
 .output-wrap {
-  background: var(--panel);
+  background: #ffffff;
   border: 3px solid var(--outline);
-  padding: 18px;
-  box-shadow: var(--shadow);
+  padding: 14px;
+  box-shadow: 6px 6px 0 rgba(10, 10, 10, 0.75);
   display: grid;
-  gap: 12px;
+  gap: 10px;
 }
 
 .output-head {
@@ -176,9 +184,9 @@ body {
 .output-shell {
   border: 3px solid #111111;
   background: #ffffff;
-  height: 230px;
-  min-height: 230px;
-  max-height: 230px;
+  height: 210px;
+  min-height: 210px;
+  max-height: 210px;
   overflow: hidden;
 }
 
@@ -197,10 +205,10 @@ body {
   background: #111111;
   color: #ffffff;
   border: 3px solid #111111;
-  box-shadow: var(--shadow);
-  padding: 18px;
+  box-shadow: 6px 6px 0 rgba(10, 10, 10, 0.75);
+  padding: 14px;
   display: grid;
-  gap: 16px;
+  gap: 12px;
 }
 
 .group {
@@ -299,16 +307,16 @@ body {
 
 .footer-note {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 18px;
+  grid-template-columns: 1fr;
+  gap: 12px;
 }
 
 .notice,
 .contact {
-  background: var(--panel);
+  background: #ffffff;
   border: 3px solid var(--outline);
-  padding: 18px;
-  box-shadow: var(--shadow);
+  padding: 14px;
+  box-shadow: 6px 6px 0 rgba(10, 10, 10, 0.75);
 }
 
 .notice-title,
@@ -349,10 +357,6 @@ body {
 }
 
 @media (max-width: 900px) {
-  .console {
-    grid-template-columns: 1fr;
-  }
-
   .controls-row.primary {
     grid-template-columns: 1fr;
   }
@@ -363,12 +367,12 @@ body {
 }
 
 @media (max-width: 640px) {
-  .shell {
-    padding: 32px 14px 48px;
+  body {
+    padding: 28px 12px;
   }
 
-  .hero {
-    padding: 18px;
+  .shell {
+    padding: 20px;
   }
 
   .status-row {
@@ -377,17 +381,13 @@ body {
   }
 
   .output-shell {
-    height: 200px;
-    min-height: 200px;
-    max-height: 200px;
+    height: 190px;
+    min-height: 190px;
+    max-height: 190px;
   }
 
   .controls {
-    padding: 16px;
-  }
-
-  .footer-note {
-    grid-template-columns: 1fr;
+    padding: 12px;
   }
 }
 
