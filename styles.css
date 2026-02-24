@@ -141,20 +141,25 @@ body {
   animation: pulse 1.6s infinite;
 }
 
-.output {
+.output-shell {
   border: 3px solid var(--ink);
   background: #ffffff;
-  padding: 16px 14px;
+  border-radius: 4px;
   height: 160px;
   min-height: 160px;
   max-height: 160px;
+  overflow: hidden;
+}
+
+.output {
+  padding: 16px 14px;
+  height: 100%;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.6;
   font-family: var(--font-body);
   cursor: pointer;
   position: relative;
-  border-radius: 4px;
   overflow-y: auto;
   scrollbar-gutter: stable both-edges;
   background-image: linear-gradient(
@@ -282,6 +287,10 @@ body {
   color: #ffe089;
 }
 
+.hidden {
+  display: none !important;
+}
+
 .card > * {
   animation: rise 0.55s ease both;
 }
@@ -337,6 +346,9 @@ body {
 
   .output {
     font-size: 15px;
+  }
+
+  .output-shell {
     height: 150px;
     min-height: 150px;
     max-height: 150px;
