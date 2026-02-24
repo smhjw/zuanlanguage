@@ -35,7 +35,7 @@ async function loadQuotes() {
     const lines = results.flatMap((text) => normalizeLines(text));
     if (lines.length > 0) {
       loadedLines = Array.from(new Set(lines));
-      if (outputEl.textContent.trim() === "点击下方按钮开始") {
+      if (history.length === 0) {
         generateLine();
       }
     }
