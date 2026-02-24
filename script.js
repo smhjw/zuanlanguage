@@ -1,10 +1,11 @@
-﻿const outputEl = document.getElementById("output");
+const outputEl = document.getElementById("output");
 const modeBadge = document.getElementById("modeBadge");
 const btnBlast = document.getElementById("btnBlast");
 const btnLotus = document.getElementById("btnLotus");
 const btnBack = document.getElementById("btnBack");
 const btnDad = document.getElementById("btnDad");
 const btnCopy = document.getElementById("btnCopy");
+const dadCheck = btnDad ? btnDad.querySelector(".check") : null;
 
 const QUOTES_FILES = ["祖安语录.txt", "祖安语录2.txt"];
 
@@ -54,6 +55,12 @@ function updateModeUI() {
   btnBlast.classList.toggle("active", currentMode === "blast");
   btnLotus.classList.toggle("active", currentMode === "lotus");
   btnDad.classList.toggle("active", dadMode);
+  if (dadCheck) {
+    dadCheck.textContent = dadMode ? "☑" : "□";
+  }
+  if (btnDad) {
+    btnDad.setAttribute("aria-pressed", dadMode ? "true" : "false");
+  }
 }
 
 function setOutput(text) {
